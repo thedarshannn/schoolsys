@@ -1,5 +1,6 @@
 package dev.darshan.schoolsys.entity;
 
+import dev.darshan.schoolsys.enums.FeesStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -20,5 +22,12 @@ public class AdmissionRecord {
     @Column(name = "id", nullable = false)
     Long id;
 
-    BigDecimal fees;
+    Double fees;
+
+    @Enumerated
+    FeesStatus feesStatus;
+
+    LocalDate admissionDate;
+
+    String grade;
 }

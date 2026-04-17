@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Entity
@@ -18,6 +20,18 @@ public class Professor {
     @Column(name = "id", nullable = false)
     Long id;
 
-    String name;
+    String firstName;
 
+    String lastName;
+
+    String title;
+
+    @Column(unique = true)
+    String email;
+
+    String department;
+
+    Double salary;
+
+    LocalDate hireDate;
 }

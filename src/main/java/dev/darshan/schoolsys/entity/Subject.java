@@ -19,4 +19,13 @@ public class Subject {
     Long id;
 
     String title;
+
+    @Column(unique = true, nullable = false)
+    String courseCode;
+
+    Integer credits;
+
+    Integer maxCapacity;
+
+    String semester;
 }
