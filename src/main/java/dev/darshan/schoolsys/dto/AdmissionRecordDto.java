@@ -9,7 +9,8 @@ import java.time.LocalDate;
 /**
  * DTO for {@link AdmissionRecord}
  */
-public record AdmissionRecordDto(Double fees,
+public record AdmissionRecordDto(
+        Long id, Double fees,
                                  FeesStatus feesStatus,
                                  LocalDate admissionDate,
                                  String grade) implements Serializable {

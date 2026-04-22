@@ -6,7 +6,8 @@ import java.time.LocalDate;
 /**
  * DTO for {@link dev.darshan.schoolsys.entity.Professor}
  */
-public record ProfessorDto(String firstName,
+public record ProfessorDto(Long id,
+                           String firstName,
                            String lastName,
                            String title,
                            String email,

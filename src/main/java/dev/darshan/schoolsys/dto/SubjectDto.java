@@ -5,7 +5,8 @@ import java.io.Serializable;
 /**
  * DTO for {@link dev.darshan.schoolsys.entity.Subject}
  */
-public record SubjectDto(String title,
+public record SubjectDto(
+        Long id, String title,
                          String courseCode,
                          Integer credits,
                          Integer maxCapacity,

@@ -8,7 +8,8 @@ import java.time.LocalDate;
 /**
  * DTO for {@link dev.darshan.schoolsys.entity.Student}
  */
-public record StudentDto(String name,
+public record StudentDto(Long id,
+                         String name,
                          String email,
                          LocalDate enrollmentDate,
                          Double gpa,
