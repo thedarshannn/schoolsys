@@ -30,4 +30,16 @@ public class ProfessorController {
                 professorService.getProfessorById(id)
         );
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProfessorDto> updateProfessor(
+            @PathVariable Long id,
+            @RequestBody ProfessorDto professorDto) {
+        return ResponseEntity.ok(professorService.updateProfessor(id, professorDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProfessor(@PathVariable Long id){
+       return ResponseEntity.ok(professorService.deleteProfessorById(id));
+    }
 }
