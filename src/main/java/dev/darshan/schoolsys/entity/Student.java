@@ -41,7 +41,7 @@ public class Student {
     @JoinTable(name = "student_subject")
     List<Subject> subjects;
 
-    @OneToOne(mappedBy = "student") // Inverse Side
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true) // Inverse Side
     AdmissionRecord admissionRecord;
 
 }

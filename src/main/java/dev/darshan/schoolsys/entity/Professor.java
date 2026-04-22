@@ -37,7 +37,7 @@ public class Professor {
 
     LocalDate hireDate;
 
-    @OneToMany(mappedBy = "professor")
+    @OneToMany(mappedBy = "professor", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     List<Subject> subjects;
 
     @ManyToMany
