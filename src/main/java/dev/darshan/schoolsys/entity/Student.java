@@ -2,18 +2,19 @@ package dev.darshan.schoolsys.entity;
 
 import dev.darshan.schoolsys.enums.StudentStatus;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
+@Builder
 @Getter
 @Setter
 @Entity
 @Table(name = "student")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Student {
 
     @Id
