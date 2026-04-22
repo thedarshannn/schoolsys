@@ -22,4 +22,9 @@ public class ProfessorServiceImpl implements ProfessorService {
         professorRepository.save(professorMapper.toProfessor(professorDto));
         return professorDto;
     }
+
+    @Override
+    public ProfessorDto getProfessorById(Long id) {
+        return professorMapper.toProfessorDto(professorRepository.getProfessorById(id));
+    }
 }

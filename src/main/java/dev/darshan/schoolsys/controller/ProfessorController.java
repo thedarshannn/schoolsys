@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/Professor")
+@RequestMapping("/api/v1/professors")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProfessorController {
 
@@ -21,6 +21,13 @@ public class ProfessorController {
     public ResponseEntity<ProfessorDto> createNewProfessor(@RequestBody ProfessorDto professorDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 professorService.createNewProfessor(professorDto)
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfessorDto> getProfessor(@PathVariable Long id){
+        return ResponseEntity.ok(
+                professorService.getProfessorById(id)
         );
     }
 }
