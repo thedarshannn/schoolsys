@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -35,4 +36,11 @@ public class Professor {
     Double salary;
 
     LocalDate hireDate;
+
+    @OneToMany(mappedBy = "professor")
+    List<Subject> subjects;
+
+    @ManyToMany
+    @JoinTable(name = "professor_student")
+    List<Student> students;
 }

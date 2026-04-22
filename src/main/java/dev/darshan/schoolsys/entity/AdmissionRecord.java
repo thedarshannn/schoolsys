@@ -31,4 +31,8 @@ public class AdmissionRecord {
     LocalDate admissionDate;
 
     String grade;
+
+    @OneToOne
+    @JoinColumn(name = "student_id")
+    Student student;
 }

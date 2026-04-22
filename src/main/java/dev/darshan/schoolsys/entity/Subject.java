@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,4 +31,11 @@ public class Subject {
     Integer maxCapacity;
 
     String semester;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    Professor professor;
+
+    @ManyToMany(mappedBy = "subjects")
+    List<Student> enrolledStudents;
 }

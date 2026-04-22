@@ -4,8 +4,8 @@ import dev.darshan.schoolsys.enums.StudentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Getter
@@ -31,8 +31,17 @@ public class Student {
 
     Double gpa;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     StudentStatus status;
 
+    @ManyToMany(mappedBy = "students")
+    List<Professor> professors;
+
+    @ManyToMany
+    @JoinTable(name = "student_subject")
+    List<Subject> subjects;
+
+    @OneToOne(mappedBy = "student") // Inverse Side
+    AdmissionRecord admissionRecord;
 
 }
