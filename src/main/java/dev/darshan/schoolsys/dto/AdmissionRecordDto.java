@@ -13,5 +13,6 @@ public record AdmissionRecordDto(
         Long id, Double fees,
                                  FeesStatus feesStatus,
                                  LocalDate admissionDate,
+        Long studentId,
                                  String grade) implements Serializable {
 }
