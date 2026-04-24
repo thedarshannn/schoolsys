@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -35,11 +37,11 @@ public class Student {
     StudentStatus status;
 
     @ManyToMany(mappedBy = "students")
-    List<Professor> professors;
+    Set<Professor> professors = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "student_subject")
-    List<Subject> subjects;
+    Set<Subject> subjects = new HashSet<>();
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true) // Inverse Side
     AdmissionRecord admissionRecord;

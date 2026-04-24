@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -37,5 +39,5 @@ public class Subject {
     Professor professor;
 
     @ManyToMany(mappedBy = "subjects")
-    List<Student> enrolledStudents;
+    Set<Student> students = new HashSet<>();
 }

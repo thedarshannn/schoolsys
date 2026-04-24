@@ -11,4 +11,6 @@ public interface ProfessorService {
     ProfessorDto updateProfessor(Long id, ProfessorDto professorDto);
 
     Void deleteProfessorById(Long id);
+
+    Void assignSubject(Long id, Long subjectId);
 }

@@ -42,4 +42,12 @@ public class ProfessorController {
     public ResponseEntity<Void> deleteProfessor(@PathVariable Long id){
        return ResponseEntity.ok(professorService.deleteProfessorById(id));
     }
+
+    @PostMapping("/{id}/subjects/{subjectId}")
+    public ResponseEntity<Void> assignSubjectToProfessor(
+            @PathVariable Long id,
+            @PathVariable Long subjectId
+    ){
+        return ResponseEntity.ok(professorService.assignSubject(id, subjectId));
+    }
 }

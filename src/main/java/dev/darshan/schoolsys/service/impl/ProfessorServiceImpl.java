@@ -2,13 +2,19 @@ package dev.darshan.schoolsys.service.impl;
 
 import dev.darshan.schoolsys.dto.ProfessorDto;
 import dev.darshan.schoolsys.entity.Professor;
+import dev.darshan.schoolsys.entity.Subject;
 import dev.darshan.schoolsys.mapper.ProfessorMapper;
 import dev.darshan.schoolsys.repository.ProfessorRepository;
+import dev.darshan.schoolsys.repository.SubjectRepository;
 import dev.darshan.schoolsys.service.ProfessorService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class ProfessorServiceImpl implements ProfessorService {
 
     ProfessorRepository professorRepository;
+    SubjectRepository subjectRepository;
     ProfessorMapper professorMapper;
 
     @Override
@@ -45,6 +52,28 @@ public class ProfessorServiceImpl implements ProfessorService {
     @Override
     public Void deleteProfessorById(Long id) {
         professorRepository.deleteById(id);
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public Void assignSubject(Long id, Long subjectId) {
+
+        Professor professor = professorRepository.findById(id)
+                .orElseThrow();
+
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow();
+
+        if (professor.getSubjects().contains(subject)) {
+            throw new RuntimeException();
+        }
+
+        subject.setProfessor(professor);         // ManyToOne side — sets FK column
+        professor.getSubjects().add(subject);    // OneToMany side — keeps in-memory in sync
+
+        subjectRepository.save(subject);// save the owning side (has the FK)
+
         return null;
     }
 }
