@@ -1,6 +1,7 @@
 package dev.darshan.schoolsys.controller;
 
 import dev.darshan.schoolsys.dto.ProfessorDto;
+import dev.darshan.schoolsys.dto.StudentDto;
 import dev.darshan.schoolsys.service.ProfessorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,11 +54,16 @@ public class ProfessorController {
         return ResponseEntity.ok(professorService.assignSubject(id, subjectId));
     }
 
-    @PutMapping("/{profTd}/subjects/{studentId}")
+    @PutMapping("/{profId}/subjects/{studentId}")
     public ResponseEntity<Void> assignStudentToProfessor(
-            @PathVariable Long profTd,
+            @PathVariable Long profId,
             @PathVariable Long studentId
     ){
-        return ResponseEntity.ok(professorService.assignStudent(profTd, studentId));
+        return ResponseEntity.ok(professorService.assignStudent(profId, studentId));
+    }
+
+    @GetMapping("/{profId}/students")
+    public ResponseEntity<List<StudentDto>> getAllStudentsOfProf(@PathVariable Long profId){
+        return ResponseEntity.ok(professorService.getAllStudentsOfProf(profId));
     }
 }

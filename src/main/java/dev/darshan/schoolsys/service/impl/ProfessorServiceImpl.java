@@ -3,10 +3,12 @@ package dev.darshan.schoolsys.service.impl;
 import dev.darshan.schoolsys.advice.exception.BusinessException;
 import dev.darshan.schoolsys.advice.exception.ResourceNotFoundException;
 import dev.darshan.schoolsys.dto.ProfessorDto;
+import dev.darshan.schoolsys.dto.StudentDto;
 import dev.darshan.schoolsys.entity.Professor;
 import dev.darshan.schoolsys.entity.Student;
 import dev.darshan.schoolsys.entity.Subject;
 import dev.darshan.schoolsys.mapper.ProfessorMapper;
+import dev.darshan.schoolsys.mapper.StudentMapper;
 import dev.darshan.schoolsys.repository.ProfessorRepository;
 import dev.darshan.schoolsys.repository.StudentRepository;
 import dev.darshan.schoolsys.repository.SubjectRepository;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
@@ -28,6 +31,7 @@ public class ProfessorServiceImpl implements ProfessorService {
     SubjectRepository subjectRepository;
     ProfessorMapper professorMapper;
     StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
 
     @Override
     public ProfessorDto createNewProfessor(ProfessorDto dto) {
@@ -87,14 +91,14 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     @Transactional
-    public Void assignStudent(Long profTd, Long studentId) {
+    public Void assignStudent(Long profId, Long studentId) {
 
-        Professor professor = professorRepository.findById(profTd)
-                .orElseThrow(()-> new ResourceNotFoundException("Professor not found with id: " + profTd));
+        Professor professor = professorRepository.findById(profId)
+                .orElseThrow(()-> new ResourceNotFoundException("Professor not found with id: " + profId));
 
 
-        Student student = studentRepository.findById(profTd)
-                .orElseThrow(()-> new ResourceNotFoundException("Student not found with id: " + profTd));
+        Student student = studentRepository.findById(profId)
+                .orElseThrow(()-> new ResourceNotFoundException("Student not found with id: " + profId));
 
         if (student.getProfessors().contains(professor)){
             throw new BusinessException("Professor is already assigned to this student!");
@@ -106,5 +110,16 @@ public class ProfessorServiceImpl implements ProfessorService {
         professorRepository.save(professor);
 
         return null;
+    }
+
+    @Override
+    public List<StudentDto> getAllStudentsOfProf(Long profId) {
+        Professor professor = professorRepository.findById(profId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Professor not found with id: " + profId));
+
+        return professor.getStudents().stream()
+                .map(studentMapper::toStudentDto)
+                .toList();
     }
 }

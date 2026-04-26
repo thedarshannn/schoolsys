@@ -1,7 +1,9 @@
 package dev.darshan.schoolsys.service;
 
 import dev.darshan.schoolsys.dto.ProfessorDto;
-import org.jspecify.annotations.Nullable;
+import dev.darshan.schoolsys.dto.StudentDto;
+
+import java.util.List;
 
 public interface ProfessorService {
 
@@ -14,5 +16,7 @@ public interface ProfessorService {
 
     Void assignSubject(Long id, Long subjectId);
 
-    Void assignStudent(Long profTd, Long studentId);
+    Void assignStudent(Long profId, Long studentId);
+
+    List<StudentDto> getAllStudentsOfProf(Long profId);
 }
