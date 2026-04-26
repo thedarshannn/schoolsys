@@ -50,4 +50,12 @@ public class ProfessorController {
     ){
         return ResponseEntity.ok(professorService.assignSubject(id, subjectId));
     }
+
+    @PutMapping("/{profTd}/subjects/{studentId}")
+    public ResponseEntity<Void> assignStudentToProfessor(
+            @PathVariable Long profTd,
+            @PathVariable Long studentId
+    ){
+        return ResponseEntity.ok(professorService.assignStudent(profTd, studentId));
+    }
 }

@@ -13,4 +13,6 @@ public interface ProfessorService {
     Void deleteProfessorById(Long id);
 
     Void assignSubject(Long id, Long subjectId);
+
+    Void assignStudent(Long profTd, Long studentId);
 }

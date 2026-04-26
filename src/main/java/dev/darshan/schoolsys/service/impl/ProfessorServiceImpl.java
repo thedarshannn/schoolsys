@@ -4,9 +4,11 @@ import dev.darshan.schoolsys.advice.exception.BusinessException;
 import dev.darshan.schoolsys.advice.exception.ResourceNotFoundException;
 import dev.darshan.schoolsys.dto.ProfessorDto;
 import dev.darshan.schoolsys.entity.Professor;
+import dev.darshan.schoolsys.entity.Student;
 import dev.darshan.schoolsys.entity.Subject;
 import dev.darshan.schoolsys.mapper.ProfessorMapper;
 import dev.darshan.schoolsys.repository.ProfessorRepository;
+import dev.darshan.schoolsys.repository.StudentRepository;
 import dev.darshan.schoolsys.repository.SubjectRepository;
 import dev.darshan.schoolsys.service.ProfessorService;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,7 @@ public class ProfessorServiceImpl implements ProfessorService {
     ProfessorRepository professorRepository;
     SubjectRepository subjectRepository;
     ProfessorMapper professorMapper;
+    StudentRepository studentRepository;
 
     @Override
     public ProfessorDto createNewProfessor(ProfessorDto dto) {
@@ -78,6 +81,29 @@ public class ProfessorServiceImpl implements ProfessorService {
         professor.getSubjects().add(subject);    // OneToMany side — keeps in-memory in sync
 
         subjectRepository.save(subject);// save the owning side (has the FK)
+
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public Void assignStudent(Long profTd, Long studentId) {
+
+        Professor professor = professorRepository.findById(profTd)
+                .orElseThrow(()-> new ResourceNotFoundException("Professor not found with id: " + profTd));
+
+
+        Student student = studentRepository.findById(profTd)
+                .orElseThrow(()-> new ResourceNotFoundException("Student not found with id: " + profTd));
+
+        if (student.getProfessors().contains(professor)){
+            throw new BusinessException("Professor is already assigned to this student!");
+        }
+
+        professor.getStudents().add(student);
+        student.getProfessors().add(professor);
+
+        professorRepository.save(professor);
 
         return null;
     }
