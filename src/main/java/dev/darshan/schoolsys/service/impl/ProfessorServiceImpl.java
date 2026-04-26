@@ -1,5 +1,7 @@
 package dev.darshan.schoolsys.service.impl;
 
+import dev.darshan.schoolsys.advice.exception.BusinessException;
+import dev.darshan.schoolsys.advice.exception.ResourceNotFoundException;
 import dev.darshan.schoolsys.dto.ProfessorDto;
 import dev.darshan.schoolsys.entity.Professor;
 import dev.darshan.schoolsys.entity.Subject;
@@ -13,8 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +37,14 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     public ProfessorDto getProfessorById(Long id) {
-        return professorMapper.toProfessorDto(professorRepository.getProfessorById(id));
+        return professorMapper.toProfessorDto(professorRepository.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Professor not found with id: " + id)));
     }
 
     @Override
     public ProfessorDto updateProfessor(Long id, ProfessorDto professorDto) {
-        Professor existing = professorRepository.findById(id).orElseThrow();
+        Professor existing = professorRepository.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Professor not found with id: " + id));
 
         professorMapper.updateProfessorFromDto(professorDto, existing);
 
@@ -60,13 +63,15 @@ public class ProfessorServiceImpl implements ProfessorService {
     public Void assignSubject(Long id, Long subjectId) {
 
         Professor professor = professorRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(
+                        ()-> new ResourceNotFoundException("Professor not found with id: " + id));
 
         Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow();
+                .orElseThrow(
+                        ()-> new ResourceNotFoundException("Subject not found with id: " + id));
 
         if (professor.getSubjects().contains(subject)) {
-            throw new RuntimeException();
+            throw new BusinessException("Subject is already assigned to professor with id "+id);
         }
 
         subject.setProfessor(professor);         // ManyToOne side — sets FK column

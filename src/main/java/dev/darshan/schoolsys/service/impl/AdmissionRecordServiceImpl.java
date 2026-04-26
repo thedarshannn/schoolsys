@@ -1,5 +1,6 @@
 package dev.darshan.schoolsys.service.impl;
 
+import dev.darshan.schoolsys.advice.exception.BusinessException;
 import dev.darshan.schoolsys.dto.AdmissionRecordDto;
 import dev.darshan.schoolsys.entity.AdmissionRecord;
 import dev.darshan.schoolsys.entity.Student;
@@ -30,11 +31,11 @@ public class AdmissionRecordServiceImpl implements AdmissionRecordService {
         Student student = studentRepository.findById(recordDto.studentId()).orElseThrow();
 
         if (student.getAdmissionRecord() != null){
-            throw new RuntimeException();
+            throw new BusinessException("Student with id "+student.getId()+",already has an admission record");
         }
 
         AdmissionRecord admissionRecord = recordMapper.toAdmissionRecord(recordDto);
-        admissionRecord.setStudent(student);          // still needed for the FK column
+        admissionRecord.setStudent(student);
         student.setAdmissionRecord(admissionRecord);
 
         Student saved = studentRepository.save(student);

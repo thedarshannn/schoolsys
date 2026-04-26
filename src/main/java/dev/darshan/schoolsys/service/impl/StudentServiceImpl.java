@@ -1,5 +1,6 @@
 package dev.darshan.schoolsys.service.impl;
 
+import dev.darshan.schoolsys.advice.exception.ResourceNotFoundException;
 import dev.darshan.schoolsys.dto.StudentDto;
 import dev.darshan.schoolsys.entity.Student;
 import dev.darshan.schoolsys.mapper.StudentMapper;
@@ -27,6 +28,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDto getStudentById(Long id) {
-        return studentMapper.toStudentDto(studentRepository.findById(id).orElseThrow());
+
+        return studentMapper.toStudentDto(studentRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Student Not Found With id: "+id)));
     }
 }
