@@ -7,4 +7,6 @@ public interface StudentService {
     StudentDto createNewStudent(StudentDto studentDto);
 
     StudentDto getStudentById(Long id);
+
+     Void assignSubjectToStudent(Long subjectId, Long studentId);
 }

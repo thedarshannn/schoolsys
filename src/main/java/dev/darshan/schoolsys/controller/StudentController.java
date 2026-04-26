@@ -31,4 +31,9 @@ public class StudentController {
                 service.getStudentById(id)
         );
     }
+
+    @PutMapping("/{subjectId}/enroll/{studentId}")
+    public ResponseEntity<Void> assigntheSubjectToStudent(@PathVariable Long subjectId, @PathVariable Long studentId){
+        return ResponseEntity.ok(service.assignSubjectToStudent(subjectId, studentId));
+    }
 }

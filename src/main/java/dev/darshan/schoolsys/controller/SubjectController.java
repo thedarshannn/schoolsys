@@ -24,10 +24,9 @@ public class SubjectController {
         );
     }
 
-    @PutMapping("/{subjectId}/enroll/{studentId}")
-    public ResponseEntity<Void> assigntheSubjectToStudent(@PathVariable Long subjectId, @PathVariable Long studentId){
-         return ResponseEntity.ok(subjectService.assignSubjectToStudent(subjectId, studentId));
-
-    }
+//    @PutMapping("/{subjectId}/enroll/{studentId}")
+//    public ResponseEntity<Void> assigntheSubjectToStudent(@PathVariable Long subjectId, @PathVariable Long studentId){
+//         return ResponseEntity.ok(subjectService.assignSubjectToStudent(subjectId, studentId));
+//    }
 
 }

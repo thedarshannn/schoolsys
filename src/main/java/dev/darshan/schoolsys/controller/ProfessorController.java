@@ -43,7 +43,7 @@ public class ProfessorController {
        return ResponseEntity.ok(professorService.deleteProfessorById(id));
     }
 
-    @PostMapping("/{id}/subjects/{subjectId}")
+    @PutMapping("/{id}/subjects/{subjectId}")
     public ResponseEntity<Void> assignSubjectToProfessor(
             @PathVariable Long id,
             @PathVariable Long subjectId
