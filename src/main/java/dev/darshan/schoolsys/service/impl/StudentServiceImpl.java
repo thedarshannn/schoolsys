@@ -3,9 +3,11 @@ package dev.darshan.schoolsys.service.impl;
 import dev.darshan.schoolsys.advice.exception.BusinessException;
 import dev.darshan.schoolsys.advice.exception.ResourceNotFoundException;
 import dev.darshan.schoolsys.dto.StudentDto;
+import dev.darshan.schoolsys.dto.SubjectDto;
 import dev.darshan.schoolsys.entity.Student;
 import dev.darshan.schoolsys.entity.Subject;
 import dev.darshan.schoolsys.mapper.StudentMapper;
+import dev.darshan.schoolsys.mapper.SubjectMapper;
 import dev.darshan.schoolsys.repository.StudentRepository;
 import dev.darshan.schoolsys.repository.SubjectRepository;
 import dev.darshan.schoolsys.service.StudentService;
@@ -13,7 +15,10 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +28,7 @@ public class StudentServiceImpl implements StudentService {
     StudentRepository studentRepository;
     SubjectRepository subjectRepository;
     StudentMapper studentMapper;
+    SubjectMapper subjectMapper;
 
     @Override
     public StudentDto createNewStudent(StudentDto studentDto) {
@@ -57,5 +63,17 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.save(student);      // save owning side
 
         return null;
+    }
+
+    @Override
+    public List<SubjectDto> getAllSubjectsOfStudent(Long studentId) {
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                "Student not found with id: " + studentId));
+
+        return  student.getSubjects().stream()
+                .map(subjectMapper::toSubjectDto)
+                .toList();
     }
 }
