@@ -15,7 +15,6 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -75,5 +74,10 @@ public class StudentServiceImpl implements StudentService {
         return  student.getSubjects().stream()
                 .map(subjectMapper::toSubjectDto)
                 .toList();
+    }
+
+    @Override
+    public void deleteStudentById(Long studentId) {
+        studentRepository.deleteById(studentId);
     }
 }

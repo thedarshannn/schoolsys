@@ -14,4 +14,6 @@ public interface StudentService {
      Void assignSubjectToStudent(Long subjectId, Long studentId);
 
     @Nullable List<SubjectDto> getAllSubjectsOfStudent(Long studentId);
+
+    void deleteStudentById(Long studentId);
 }

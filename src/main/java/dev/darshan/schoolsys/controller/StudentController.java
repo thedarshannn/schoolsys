@@ -44,4 +44,9 @@ public class StudentController {
     public ResponseEntity<List<SubjectDto>> getAllSubjectsOfStudent(@PathVariable Long studentId){
         return ResponseEntity.ok(service.getAllSubjectsOfStudent(studentId));
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteStudentById(@PathVariable Long studentId){
+        service.deleteStudentById(studentId);
+    }
 }
