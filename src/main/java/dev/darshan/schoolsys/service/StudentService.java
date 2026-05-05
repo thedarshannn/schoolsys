@@ -16,4 +16,6 @@ public interface StudentService {
     @Nullable List<SubjectDto> getAllSubjectsOfStudent(Long studentId);
 
     void deleteStudentById(Long studentId);
+
+    void unenrollStudentFromSubject(Long studentId, Long subjectId);
 }

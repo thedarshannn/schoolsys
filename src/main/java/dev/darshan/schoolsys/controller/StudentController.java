@@ -45,8 +45,16 @@ public class StudentController {
         return ResponseEntity.ok(service.getAllSubjectsOfStudent(studentId));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{studentId}")
     public void deleteStudentById(@PathVariable Long studentId){
         service.deleteStudentById(studentId);
+    }
+
+    @DeleteMapping("/{studentId}/subjects/{subjectId}")
+    public ResponseEntity<Void> unenrollFromSubject(
+            @PathVariable Long studentId,
+            @PathVariable Long subjectId) {
+        service.unenrollStudentFromSubject(studentId, subjectId);
+        return ResponseEntity.noContent().build();
     }
 }

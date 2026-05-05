@@ -80,4 +80,25 @@ public class StudentServiceImpl implements StudentService {
     public void deleteStudentById(Long studentId) {
         studentRepository.deleteById(studentId);
     }
+
+    @Override
+    @Transactional
+    public void unenrollStudentFromSubject(Long studentId, Long subjectId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Student not found with id: " + studentId));
+
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Subject not found with id: " + subjectId));
+
+        if (!student.getSubjects().contains(subject)) {
+            throw new BusinessException("Student is not enrolled in this subject");
+        }
+
+        student.getSubjects().remove(subject);    // remove from owning side
+        subject.getStudents().remove(student);    // keep inverse in sync
+
+        studentRepository.save(student);
+    }
 }
