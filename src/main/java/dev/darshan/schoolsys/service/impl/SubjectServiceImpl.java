@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,19 @@ public class SubjectServiceImpl implements SubjectService{
         Subject toSave = subjectMapper.toSubject(subjectDto);
         Subject saved = subjectRepository.save(toSave);
         return subjectMapper.toSubjectDto(saved);
+    }
+
+    @Override
+    public List<SubjectDto> getAllSubjects() {
+        return subjectRepository.findAll()
+                .stream()
+                .map(subjectMapper::toSubjectDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SubjectDto> getAllSubjectsBySem(String semester) {
+        return subjectRepository.getSubjectsBySemester(semester).stream().map(subjectMapper::toSubjectDto).collect(Collectors.toList());
     }
 
 }

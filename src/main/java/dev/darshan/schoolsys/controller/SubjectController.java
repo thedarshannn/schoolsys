@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/subjects")
@@ -28,5 +30,15 @@ public class SubjectController {
 //    public ResponseEntity<Void> assigntheSubjectToStudent(@PathVariable Long subjectId, @PathVariable Long studentId){
 //         return ResponseEntity.ok(subjectService.assignSubjectToStudent(subjectId, studentId));
 //    }
+
+    @GetMapping
+    public ResponseEntity<List<SubjectDto>> getAllSubjects(
+            @RequestParam(required = false) String semester
+    ){
+        if (semester != null){
+            return ResponseEntity.ok(subjectService.getAllSubjectsBySem(semester));
+        }
+        return ResponseEntity.ok(subjectService.getAllSubjects());
+    }
 
 }
