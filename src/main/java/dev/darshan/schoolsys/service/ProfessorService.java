@@ -19,4 +19,8 @@ public interface ProfessorService {
     Void assignStudent(Long profId, Long studentId);
 
     List<StudentDto> getAllStudentsOfProf(Long profId);
+
+    List<ProfessorDto> getProfessorsByDepartment(String department);
+
+    List<ProfessorDto> getAllProfessors();
 }

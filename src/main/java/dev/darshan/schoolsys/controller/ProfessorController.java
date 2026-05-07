@@ -66,4 +66,15 @@ public class ProfessorController {
     public ResponseEntity<List<StudentDto>> getAllStudentsOfProf(@PathVariable Long profId){
         return ResponseEntity.ok(professorService.getAllStudentsOfProf(profId));
     }
+
+    @GetMapping
+    public ResponseEntity<List<ProfessorDto>> getProfessorsByDepartment(
+            @RequestParam(required = false) String department
+    ){
+        if (department.isEmpty()){
+            return ResponseEntity.ok(professorService.getAllProfessors());
+        }
+
+        return ResponseEntity.ok(professorService.getProfessorsByDepartment(department));
+    }
 }

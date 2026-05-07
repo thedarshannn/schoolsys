@@ -20,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -121,5 +122,18 @@ public class ProfessorServiceImpl implements ProfessorService {
         return professor.getStudents().stream()
                 .map(studentMapper::toStudentDto)
                 .toList();
+    }
+
+    @Override
+    public List<ProfessorDto> getProfessorsByDepartment(String department) {
+        return professorRepository.findByDepartment(department)
+                .stream()
+                .map(professorMapper::toProfessorDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProfessorDto> getAllProfessors() {
+        return professorRepository.findAll().stream().map(professorMapper::toProfessorDto).collect(Collectors.toList());
     }
 }
