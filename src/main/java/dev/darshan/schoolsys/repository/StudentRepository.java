@@ -10,4 +10,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findByStatus(StudentStatus status);
 
+    List<Student> findByGpaGreaterThanEqual(Double gpaIsGreaterThan);
+
 }

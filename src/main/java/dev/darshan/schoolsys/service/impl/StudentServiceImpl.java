@@ -116,4 +116,12 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDto> getAllStudents() {
         return studentRepository.findAll().stream().map(studentMapper::toStudentDto).collect(Collectors.toList());
     }
+
+    @Override
+    public List<StudentDto> getStudentsByGpaAbove(Double gpa) {
+        return studentRepository.findByGpaGreaterThanEqual(gpa)
+                .stream()
+                .map(studentMapper::toStudentDto)
+                .collect(Collectors.toList());
+    }
 }

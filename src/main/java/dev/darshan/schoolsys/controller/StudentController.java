@@ -61,10 +61,15 @@ public class StudentController {
 
     @GetMapping
     public ResponseEntity<List<StudentDto>> getAllStudents(
-            @RequestParam(required = false) StudentStatus status) {
+            @RequestParam(required = false) StudentStatus status,
+            @RequestParam(required = false) Double gpa) {
 
         if (status != null) {
             return ResponseEntity.ok(service.getStudentsByStatus(status));
+        }
+
+        if (gpa != null){
+            return ResponseEntity.ok(service.getStudentsByGpaAbove(gpa));
         }
         return ResponseEntity.ok(service.getAllStudents());
     }

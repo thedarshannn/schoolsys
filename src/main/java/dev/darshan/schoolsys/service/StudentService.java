@@ -23,4 +23,6 @@ public interface StudentService {
     List<StudentDto> getStudentsByStatus(StudentStatus status);
 
     List<StudentDto> getAllStudents();
+
+    List<StudentDto> getStudentsByGpaAbove(Double gpa);
 }
