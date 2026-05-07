@@ -3,6 +3,7 @@ package dev.darshan.schoolsys.controller;
 import dev.darshan.schoolsys.dto.StudentDto;
 
 import dev.darshan.schoolsys.dto.SubjectDto;
+import dev.darshan.schoolsys.enums.StudentStatus;
 import dev.darshan.schoolsys.service.StudentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +57,15 @@ public class StudentController {
             @PathVariable Long subjectId) {
         service.unenrollStudentFromSubject(studentId, subjectId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<StudentDto>> getAllStudents(
+            @RequestParam(required = false) StudentStatus status) {
+
+        if (status != null) {
+            return ResponseEntity.ok(service.getStudentsByStatus(status));
+        }
+        return ResponseEntity.ok(service.getAllStudents());
     }
 }

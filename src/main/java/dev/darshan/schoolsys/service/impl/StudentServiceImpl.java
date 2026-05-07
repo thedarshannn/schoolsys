@@ -6,6 +6,7 @@ import dev.darshan.schoolsys.dto.StudentDto;
 import dev.darshan.schoolsys.dto.SubjectDto;
 import dev.darshan.schoolsys.entity.Student;
 import dev.darshan.schoolsys.entity.Subject;
+import dev.darshan.schoolsys.enums.StudentStatus;
 import dev.darshan.schoolsys.mapper.StudentMapper;
 import dev.darshan.schoolsys.mapper.SubjectMapper;
 import dev.darshan.schoolsys.repository.StudentRepository;
@@ -18,6 +19,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -100,5 +102,18 @@ public class StudentServiceImpl implements StudentService {
         subject.getStudents().remove(student);    // keep inverse in sync
 
         studentRepository.save(student);
+    }
+
+    @Override
+    public List<StudentDto> getStudentsByStatus(StudentStatus status) {
+        return studentRepository.findByStatus(status)
+                .stream()
+                .map(studentMapper::toStudentDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudentDto> getAllStudents() {
+        return studentRepository.findAll().stream().map(studentMapper::toStudentDto).collect(Collectors.toList());
     }
 }
