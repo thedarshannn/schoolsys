@@ -2,6 +2,7 @@ package dev.darshan.schoolsys.service;
 
 import dev.darshan.schoolsys.dto.StudentDto;
 import dev.darshan.schoolsys.dto.SubjectDto;
+import dev.darshan.schoolsys.dto.TranscriptResponse;
 import dev.darshan.schoolsys.enums.StudentStatus;
 import org.jspecify.annotations.Nullable;
 
@@ -27,4 +28,6 @@ public interface StudentService {
     List<StudentDto> getStudentsByGpaAbove(Double gpa);
 
     List<StudentDto> getTopStudentsByGpa(int limit);
+
+    TranscriptResponse getStudentTranscript(Long studentId);
 }

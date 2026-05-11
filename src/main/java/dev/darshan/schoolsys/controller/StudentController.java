@@ -3,6 +3,7 @@ package dev.darshan.schoolsys.controller;
 import dev.darshan.schoolsys.dto.StudentDto;
 
 import dev.darshan.schoolsys.dto.SubjectDto;
+import dev.darshan.schoolsys.dto.TranscriptResponse;
 import dev.darshan.schoolsys.enums.StudentStatus;
 import dev.darshan.schoolsys.service.StudentService;
 import lombok.AccessLevel;
@@ -78,5 +79,11 @@ public class StudentController {
     public ResponseEntity<List<StudentDto>> getTopStudents(
             @RequestParam(defaultValue = "5") int limit) {
         return ResponseEntity.ok(service.getTopStudentsByGpa(limit));
+    }
+
+    @GetMapping("/{id}/transcript")
+    public ResponseEntity<TranscriptResponse> getTranscript(
+            @PathVariable Long id) {
+        return ResponseEntity.ok(service.getStudentTranscript(id));
     }
 }

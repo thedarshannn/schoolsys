@@ -2,11 +2,12 @@ package dev.darshan.schoolsys.service.impl;
 
 import dev.darshan.schoolsys.advice.exception.BusinessException;
 import dev.darshan.schoolsys.advice.exception.ResourceNotFoundException;
-import dev.darshan.schoolsys.dto.StudentDto;
-import dev.darshan.schoolsys.dto.SubjectDto;
+import dev.darshan.schoolsys.dto.*;
 import dev.darshan.schoolsys.entity.Student;
 import dev.darshan.schoolsys.entity.Subject;
 import dev.darshan.schoolsys.enums.StudentStatus;
+import dev.darshan.schoolsys.mapper.AdmissionRecordMapper;
+import dev.darshan.schoolsys.mapper.ProfessorMapper;
 import dev.darshan.schoolsys.mapper.StudentMapper;
 import dev.darshan.schoolsys.mapper.SubjectMapper;
 import dev.darshan.schoolsys.repository.StudentRepository;
@@ -30,6 +31,8 @@ public class StudentServiceImpl implements StudentService {
     SubjectRepository subjectRepository;
     StudentMapper studentMapper;
     SubjectMapper subjectMapper;
+    ProfessorMapper professorMapper;
+    AdmissionRecordMapper admissionMapper;
 
     @Override
     public StudentDto createNewStudent(StudentDto studentDto) {
@@ -131,5 +134,30 @@ public class StudentServiceImpl implements StudentService {
                 .stream()
                 .map(studentMapper::toStudentDto)
                 .toList();
+    }
+
+    @Override
+    public TranscriptResponse getStudentTranscript(Long studentId) {
+        Student student = studentRepository.findStudentWithFullProfile(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Student not found with id: " + studentId));
+
+        StudentDto studentDto = studentMapper.toStudentDto(student);
+
+        List<ProfessorDto> professors = student.getProfessors()
+                .stream()
+                .map(professorMapper::toProfessorDto)
+                .toList();
+
+        List<SubjectDto> subjects = student.getSubjects()
+                .stream()
+                .map(subjectMapper::toSubjectDto)
+                .toList();
+
+        AdmissionRecordDto admissionRecord = student.getAdmissionRecord() != null
+                ? admissionMapper.toAdmissionRecordDto(student.getAdmissionRecord())
+                : null;
+
+        return new TranscriptResponse(studentDto, professors, subjects, admissionRecord);
     }
 }
