@@ -1,5 +1,6 @@
 package dev.darshan.schoolsys.service;
 
+import dev.darshan.schoolsys.dto.DepartmentSummaryResponse;
 import dev.darshan.schoolsys.dto.ProfessorDto;
 import dev.darshan.schoolsys.dto.StudentDto;
 import dev.darshan.schoolsys.dto.SubjectCountResponse;
@@ -26,4 +27,6 @@ public interface ProfessorService {
     List<ProfessorDto> getAllProfessors();
 
     SubjectCountResponse getSubjectCountForProfessor(Long professorId);
+
+    List<DepartmentSummaryResponse> getDepartmentSummary();
 }

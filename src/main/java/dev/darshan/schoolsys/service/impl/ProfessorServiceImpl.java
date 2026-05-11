@@ -2,10 +2,7 @@ package dev.darshan.schoolsys.service.impl;
 
 import dev.darshan.schoolsys.advice.exception.BusinessException;
 import dev.darshan.schoolsys.advice.exception.ResourceNotFoundException;
-import dev.darshan.schoolsys.dto.ProfessorDto;
-import dev.darshan.schoolsys.dto.StudentDto;
-import dev.darshan.schoolsys.dto.SubjectCountResponse;
-import dev.darshan.schoolsys.dto.SubjectDto;
+import dev.darshan.schoolsys.dto.*;
 import dev.darshan.schoolsys.entity.Professor;
 import dev.darshan.schoolsys.entity.Student;
 import dev.darshan.schoolsys.entity.Subject;
@@ -155,5 +152,10 @@ public class ProfessorServiceImpl implements ProfessorService {
                 .toList();
 
         return new SubjectCountResponse(professorId, count, subjects);
+    }
+
+    @Override
+    public List<DepartmentSummaryResponse> getDepartmentSummary() {
+        return professorRepository.findDepartmentSummary();
     }
 }

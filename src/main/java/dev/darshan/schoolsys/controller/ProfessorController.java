@@ -1,5 +1,6 @@
 package dev.darshan.schoolsys.controller;
 
+import dev.darshan.schoolsys.dto.DepartmentSummaryResponse;
 import dev.darshan.schoolsys.dto.ProfessorDto;
 import dev.darshan.schoolsys.dto.StudentDto;
 import dev.darshan.schoolsys.dto.SubjectCountResponse;
@@ -84,5 +85,10 @@ public class ProfessorController {
             @PathVariable Long professorId
     ){
         return ResponseEntity.ok(professorService.getSubjectCountForProfessor(professorId));
+    }
+
+    @GetMapping("/department-summary")
+    public ResponseEntity<List<DepartmentSummaryResponse>> getDepartmentSummary() {
+        return ResponseEntity.ok(professorService.getDepartmentSummary());
     }
 }
