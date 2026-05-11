@@ -1,5 +1,6 @@
 package dev.darshan.schoolsys.controller;
 
+import dev.darshan.schoolsys.dto.AvailableSubjectResponse;
 import dev.darshan.schoolsys.dto.SubjectDto;
 import dev.darshan.schoolsys.service.SubjectService;
 import lombok.AccessLevel;
@@ -39,6 +40,11 @@ public class SubjectController {
             return ResponseEntity.ok(subjectService.getAllSubjectsBySem(semester));
         }
         return ResponseEntity.ok(subjectService.getAllSubjects());
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<AvailableSubjectResponse>> getAvailableSubjects() {
+        return ResponseEntity.ok(subjectService.getAvailableSubjects());
     }
 
 }

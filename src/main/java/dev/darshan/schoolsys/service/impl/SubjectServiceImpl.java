@@ -1,6 +1,7 @@
 package dev.darshan.schoolsys.service.impl;
 
 
+import dev.darshan.schoolsys.dto.AvailableSubjectResponse;
 import dev.darshan.schoolsys.dto.SubjectDto;
 import dev.darshan.schoolsys.entity.Subject;
 import dev.darshan.schoolsys.mapper.SubjectMapper;
@@ -41,6 +42,22 @@ public class SubjectServiceImpl implements SubjectService{
     @Override
     public List<SubjectDto> getAllSubjectsBySem(String semester) {
         return subjectRepository.getSubjectsBySemester(semester).stream().map(subjectMapper::toSubjectDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AvailableSubjectResponse> getAvailableSubjects() {
+        return subjectRepository.findAvailableSubjects()
+                .stream()
+                .map(subject -> new AvailableSubjectResponse(
+                        subject.getId(),
+                        subject.getTitle(),
+                        subject.getCourseCode(),
+                        subject.getSemester(),
+                        subject.getMaxCapacity(),
+                        subject.getStudents().size(),
+                        subject.getMaxCapacity() - subject.getStudents().size()
+                ))
+                .toList();
     }
 
 }

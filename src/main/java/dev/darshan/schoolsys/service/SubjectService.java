@@ -1,5 +1,6 @@
 package dev.darshan.schoolsys.service;
 
+import dev.darshan.schoolsys.dto.AvailableSubjectResponse;
 import dev.darshan.schoolsys.dto.SubjectDto;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface SubjectService {
     List<SubjectDto> getAllSubjects();
 
     List<SubjectDto> getAllSubjectsBySem(String semester);
+
+    List<AvailableSubjectResponse> getAvailableSubjects();
 }
