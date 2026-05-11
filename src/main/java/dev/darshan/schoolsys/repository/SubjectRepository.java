@@ -8,4 +8,6 @@ import java.util.List;
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> getSubjectsBySemester(String semester);
+
+    long countSubjectByProfessor_Id(Long professorId);
 }

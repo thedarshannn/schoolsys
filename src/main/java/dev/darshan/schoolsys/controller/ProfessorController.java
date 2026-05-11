@@ -2,6 +2,7 @@ package dev.darshan.schoolsys.controller;
 
 import dev.darshan.schoolsys.dto.ProfessorDto;
 import dev.darshan.schoolsys.dto.StudentDto;
+import dev.darshan.schoolsys.dto.SubjectCountResponse;
 import dev.darshan.schoolsys.service.ProfessorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -76,5 +77,12 @@ public class ProfessorController {
         }
 
         return ResponseEntity.ok(professorService.getProfessorsByDepartment(department));
+    }
+
+    @GetMapping("/{professorId}/subjects/count")
+    public ResponseEntity<SubjectCountResponse> getSubjectCountForProfessor(
+            @PathVariable Long professorId
+    ){
+        return ResponseEntity.ok(professorService.getSubjectCountForProfessor(professorId));
     }
 }

@@ -4,11 +4,14 @@ import dev.darshan.schoolsys.advice.exception.BusinessException;
 import dev.darshan.schoolsys.advice.exception.ResourceNotFoundException;
 import dev.darshan.schoolsys.dto.ProfessorDto;
 import dev.darshan.schoolsys.dto.StudentDto;
+import dev.darshan.schoolsys.dto.SubjectCountResponse;
+import dev.darshan.schoolsys.dto.SubjectDto;
 import dev.darshan.schoolsys.entity.Professor;
 import dev.darshan.schoolsys.entity.Student;
 import dev.darshan.schoolsys.entity.Subject;
 import dev.darshan.schoolsys.mapper.ProfessorMapper;
 import dev.darshan.schoolsys.mapper.StudentMapper;
+import dev.darshan.schoolsys.mapper.SubjectMapper;
 import dev.darshan.schoolsys.repository.ProfessorRepository;
 import dev.darshan.schoolsys.repository.StudentRepository;
 import dev.darshan.schoolsys.repository.SubjectRepository;
@@ -32,7 +35,8 @@ public class ProfessorServiceImpl implements ProfessorService {
     SubjectRepository subjectRepository;
     ProfessorMapper professorMapper;
     StudentRepository studentRepository;
-    private final StudentMapper studentMapper;
+    StudentMapper studentMapper;
+    SubjectMapper subjectMapper;
 
     @Override
     public ProfessorDto createNewProfessor(ProfessorDto dto) {
@@ -135,5 +139,21 @@ public class ProfessorServiceImpl implements ProfessorService {
     @Override
     public List<ProfessorDto> getAllProfessors() {
         return professorRepository.findAll().stream().map(professorMapper::toProfessorDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public SubjectCountResponse getSubjectCountForProfessor(Long professorId) {
+
+        Professor professor = professorRepository.findById(professorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Professor not found with id: " + professorId));
+
+        long count = subjectRepository.countSubjectByProfessor_Id(professorId);
+
+        List<SubjectDto> subjects = professor.getSubjects()
+                .stream()
+                .map(subjectMapper::toSubjectDto)
+                .toList();
+
+        return new SubjectCountResponse(professorId, count, subjects);
     }
 }
