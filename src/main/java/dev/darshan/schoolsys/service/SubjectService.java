@@ -2,6 +2,7 @@ package dev.darshan.schoolsys.service;
 
 import dev.darshan.schoolsys.dto.AvailableSubjectResponse;
 import dev.darshan.schoolsys.dto.SubjectDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -9,9 +10,9 @@ import java.util.List;
 public interface SubjectService {
     SubjectDto createNewSubject(SubjectDto subjectDto);
 
-    List<SubjectDto> getAllSubjects();
+    Page<SubjectDto> getAllSubjects(int page, int size, String sortBy, String direction);
 
-    List<SubjectDto> getAllSubjectsBySem(String semester);
+    Page<SubjectDto> getAllSubjectsBySem(String semester, int page, int size, String sortBy, String direction);
 
     List<AvailableSubjectResponse> getAvailableSubjects();
 }

@@ -8,6 +8,7 @@ import dev.darshan.schoolsys.service.ProfessorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,14 +71,18 @@ public class ProfessorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProfessorDto>> getProfessorsByDepartment(
-            @RequestParam(required = false) String department
+    public ResponseEntity<Page<ProfessorDto>> getAllProfessors(
+            @RequestParam(required = false) String department,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
     ){
-        if (department.isEmpty()){
-            return ResponseEntity.ok(professorService.getAllProfessors());
+        if (department != null && !department.isEmpty()) {
+            return ResponseEntity.ok(professorService.getProfessorsByDepartment(department, page, size, sortBy, direction));
         }
 
-        return ResponseEntity.ok(professorService.getProfessorsByDepartment(department));
+        return ResponseEntity.ok(professorService.getAllProfessors(page, size, sortBy, direction));
     }
 
     @GetMapping("/{professorId}/subjects/count")

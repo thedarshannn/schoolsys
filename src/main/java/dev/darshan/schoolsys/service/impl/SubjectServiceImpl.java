@@ -10,9 +10,13 @@ import dev.darshan.schoolsys.service.SubjectService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -20,6 +24,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SubjectServiceImpl implements SubjectService{
+
+    private static final Set<String> ALLOWED_SORT_FIELDS =
+            Set.of("id", "title", "credits", "maxCapacity", "semester");
 
     SubjectRepository subjectRepository;
     SubjectMapper subjectMapper;
@@ -32,16 +39,23 @@ public class SubjectServiceImpl implements SubjectService{
     }
 
     @Override
-    public List<SubjectDto> getAllSubjects() {
-        return subjectRepository.findAll()
-                .stream()
-                .map(subjectMapper::toSubjectDto)
-                .collect(Collectors.toList());
+    public Page<SubjectDto> getAllSubjects(int page, int size, String sortBy, String direction) {
+        PageRequest pageable = PageRequest.of(page, size, buildSort(sortBy, direction));
+        return subjectRepository.findAll(pageable).map(subjectMapper::toSubjectDto);
     }
 
     @Override
-    public List<SubjectDto> getAllSubjectsBySem(String semester) {
-        return subjectRepository.getSubjectsBySemester(semester).stream().map(subjectMapper::toSubjectDto).collect(Collectors.toList());
+    public Page<SubjectDto> getAllSubjectsBySem(String semester, int page, int size, String sortBy, String direction) {
+        PageRequest pageable = PageRequest.of(page, size, buildSort(sortBy, direction));
+        return subjectRepository.getSubjectsBySemester(semester, pageable)
+                .map(subjectMapper::toSubjectDto);
+    }
+
+    private Sort buildSort(String sortBy, String direction) {
+        String field = ALLOWED_SORT_FIELDS.contains(sortBy) ? sortBy : "id";
+        return direction.equalsIgnoreCase("desc")
+                ? Sort.by(field).descending()
+                : Sort.by(field).ascending();
     }
 
     @Override

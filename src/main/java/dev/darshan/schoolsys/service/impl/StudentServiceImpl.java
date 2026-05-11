@@ -17,15 +17,22 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StudentServiceImpl implements StudentService {
+
+    private static final Set<String> ALLOWED_SORT_FIELDS =
+            Set.of("id", "name", "gpa", "status", "enrollmentDate");
 
     StudentRepository studentRepository;
     SubjectRepository subjectRepository;
@@ -108,24 +115,30 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> getStudentsByStatus(StudentStatus status) {
-        return studentRepository.findByStatus(status)
-                .stream()
-                .map(studentMapper::toStudentDto)
-                .collect(Collectors.toList());
+    public Page<StudentDto> getStudentsByStatus(StudentStatus status, int page, int size, String sortBy, String direction) {
+        PageRequest pageable = PageRequest.of(page, size, buildSort(sortBy, direction));
+        return studentRepository.findByStatus(status, pageable)
+                .map(studentMapper::toStudentDto);
     }
 
     @Override
-    public List<StudentDto> getAllStudents() {
-        return studentRepository.findAll().stream().map(studentMapper::toStudentDto).collect(Collectors.toList());
+    public Page<StudentDto> getAllStudents(int page, int size, String sortBy, String direction) {
+        PageRequest pageable = PageRequest.of(page, size, buildSort(sortBy, direction));
+        return studentRepository.findAll(pageable).map(studentMapper::toStudentDto);
     }
 
     @Override
-    public List<StudentDto> getStudentsByGpaAbove(Double gpa) {
-        return studentRepository.findByGpaGreaterThanEqual(gpa)
-                .stream()
-                .map(studentMapper::toStudentDto)
-                .collect(Collectors.toList());
+    public Page<StudentDto> getStudentsByGpaAbove(Double gpa, int page, int size, String sortBy, String direction) {
+        PageRequest pageable = PageRequest.of(page, size, buildSort(sortBy, direction));
+        return studentRepository.findByGpaGreaterThanEqual(gpa, pageable)
+                .map(studentMapper::toStudentDto);
+    }
+
+    private Sort buildSort(String sortBy, String direction) {
+        String field = ALLOWED_SORT_FIELDS.contains(sortBy) ? sortBy : "id";
+        return direction.equalsIgnoreCase("desc")
+                ? Sort.by(field).descending()
+                : Sort.by(field).ascending();
     }
 
     @Override

@@ -4,6 +4,7 @@ import dev.darshan.schoolsys.dto.DepartmentSummaryResponse;
 import dev.darshan.schoolsys.dto.ProfessorDto;
 import dev.darshan.schoolsys.dto.StudentDto;
 import dev.darshan.schoolsys.dto.SubjectCountResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -22,9 +23,9 @@ public interface ProfessorService {
 
     List<StudentDto> getAllStudentsOfProf(Long profId);
 
-    List<ProfessorDto> getProfessorsByDepartment(String department);
+    Page<ProfessorDto> getProfessorsByDepartment(String department, int page, int size, String sortBy, String direction);
 
-    List<ProfessorDto> getAllProfessors();
+    Page<ProfessorDto> getAllProfessors(int page, int size, String sortBy, String direction);
 
     SubjectCountResponse getSubjectCountForProfessor(Long professorId);
 

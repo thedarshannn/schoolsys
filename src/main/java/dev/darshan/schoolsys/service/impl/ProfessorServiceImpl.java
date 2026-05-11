@@ -17,9 +17,13 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -27,6 +31,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProfessorServiceImpl implements ProfessorService {
+
+    private static final Set<String> ALLOWED_SORT_FIELDS =
+            Set.of("id", "firstName", "lastName", "salary", "department", "hireDate");
 
     ProfessorRepository professorRepository;
     SubjectRepository subjectRepository;
@@ -126,16 +133,23 @@ public class ProfessorServiceImpl implements ProfessorService {
     }
 
     @Override
-    public List<ProfessorDto> getProfessorsByDepartment(String department) {
-        return professorRepository.findByDepartment(department)
-                .stream()
-                .map(professorMapper::toProfessorDto)
-                .collect(Collectors.toList());
+    public Page<ProfessorDto> getProfessorsByDepartment(String department, int page, int size, String sortBy, String direction) {
+        PageRequest pageable = PageRequest.of(page, size, buildSort(sortBy, direction));
+        return professorRepository.findByDepartment(department, pageable)
+                .map(professorMapper::toProfessorDto);
     }
 
     @Override
-    public List<ProfessorDto> getAllProfessors() {
-        return professorRepository.findAll().stream().map(professorMapper::toProfessorDto).collect(Collectors.toList());
+    public Page<ProfessorDto> getAllProfessors(int page, int size, String sortBy, String direction) {
+        PageRequest pageable = PageRequest.of(page, size, buildSort(sortBy, direction));
+        return professorRepository.findAll(pageable).map(professorMapper::toProfessorDto);
+    }
+
+    private Sort buildSort(String sortBy, String direction) {
+        String field = ALLOWED_SORT_FIELDS.contains(sortBy) ? sortBy : "id";
+        return direction.equalsIgnoreCase("desc")
+                ? Sort.by(field).descending()
+                : Sort.by(field).ascending();
     }
 
     @Override

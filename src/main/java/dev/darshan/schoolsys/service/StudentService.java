@@ -5,6 +5,7 @@ import dev.darshan.schoolsys.dto.SubjectDto;
 import dev.darshan.schoolsys.dto.TranscriptResponse;
 import dev.darshan.schoolsys.enums.StudentStatus;
 import org.jspecify.annotations.Nullable;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ public interface StudentService {
 
     void unenrollStudentFromSubject(Long studentId, Long subjectId);
 
-    List<StudentDto> getStudentsByStatus(StudentStatus status);
+    Page<StudentDto> getStudentsByStatus(StudentStatus status, int page, int size, String sortBy, String direction);
 
-    List<StudentDto> getAllStudents();
+    Page<StudentDto> getAllStudents(int page, int size, String sortBy, String direction);
 
-    List<StudentDto> getStudentsByGpaAbove(Double gpa);
+    Page<StudentDto> getStudentsByGpaAbove(Double gpa, int page, int size, String sortBy, String direction);
 
     List<StudentDto> getTopStudentsByGpa(int limit);
 

@@ -2,15 +2,17 @@ package dev.darshan.schoolsys.repository;
 
 import dev.darshan.schoolsys.dto.DepartmentSummaryResponse;
 import dev.darshan.schoolsys.entity.Professor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
-    Professor getProfessorById(Long id);
 
-    List<Professor> findByDepartment(String department);
+
+    Page<Professor> findByDepartment(String department, Pageable pageable);
 
     @Query("""
     SELECT new dev.darshan.schoolsys.dto.DepartmentSummaryResponse(

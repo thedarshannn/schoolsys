@@ -9,6 +9,7 @@ import dev.darshan.schoolsys.service.StudentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,18 +62,23 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StudentDto>> getAllStudents(
+    public ResponseEntity<Page<StudentDto>> getAllStudents(
             @RequestParam(required = false) StudentStatus status,
-            @RequestParam(required = false) Double gpa) {
+            @RequestParam(required = false) Double gpa,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
 
         if (status != null) {
-            return ResponseEntity.ok(service.getStudentsByStatus(status));
+            return ResponseEntity.ok(service.getStudentsByStatus(status, page, size, sortBy, direction));
         }
 
-        if (gpa != null){
-            return ResponseEntity.ok(service.getStudentsByGpaAbove(gpa));
+        if (gpa != null) {
+            return ResponseEntity.ok(service.getStudentsByGpaAbove(gpa, page, size, sortBy, direction));
         }
-        return ResponseEntity.ok(service.getAllStudents());
+
+        return ResponseEntity.ok(service.getAllStudents(page, size, sortBy, direction));
     }
 
     @GetMapping("/top")
