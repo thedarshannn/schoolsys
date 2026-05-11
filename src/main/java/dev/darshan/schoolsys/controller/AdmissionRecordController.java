@@ -1,16 +1,16 @@
 package dev.darshan.schoolsys.controller;
 
 import dev.darshan.schoolsys.dto.AdmissionRecordDto;
+import dev.darshan.schoolsys.enums.FeesStatus;
 import dev.darshan.schoolsys.service.AdmissionRecordService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,4 +26,16 @@ public class AdmissionRecordController {
                 admissionRecordService.addAdmissionRecord(recordDto)
         );
     }
+
+    @GetMapping
+    public ResponseEntity<List<AdmissionRecordDto>> getAllRecords(
+            @RequestParam(required = false) FeesStatus feesStatus
+    ){
+        if (feesStatus != null){
+            return ResponseEntity.ok(admissionRecordService.getAdmissionsByFeesStatus(feesStatus));
+        }
+
+        return ResponseEntity.ok(admissionRecordService.getAllRecords());
+    }
+
 }
