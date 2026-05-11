@@ -25,4 +25,6 @@ public interface StudentService {
     List<StudentDto> getAllStudents();
 
     List<StudentDto> getStudentsByGpaAbove(Double gpa);
+
+    List<StudentDto> getTopStudentsByGpa(int limit);
 }

@@ -124,4 +124,12 @@ public class StudentServiceImpl implements StudentService {
                 .map(studentMapper::toStudentDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<StudentDto> getTopStudentsByGpa(int limit) {
+        return studentRepository.findTopStudentsByGpa(limit)
+                .stream()
+                .map(studentMapper::toStudentDto)
+                .toList();
+    }
 }

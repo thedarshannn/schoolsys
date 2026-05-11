@@ -73,4 +73,10 @@ public class StudentController {
         }
         return ResponseEntity.ok(service.getAllStudents());
     }
+
+    @GetMapping("/top")
+    public ResponseEntity<List<StudentDto>> getTopStudents(
+            @RequestParam(defaultValue = "5") int limit) {
+        return ResponseEntity.ok(service.getTopStudentsByGpa(limit));
+    }
 }
